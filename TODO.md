@@ -6,12 +6,12 @@
 
 ## Setup & Infrastructure
 
-- [ ] `[MVP]` Initialize React Native project with TypeScript template
-- [ ] `[MVP]` Initialize Spring Boot 3 project (Java 21, Maven/Gradle, PostgreSQL driver, Spring Security, Spring Data JPA)
-- [ ] `[MVP]` Set up PostgreSQL database (local dev instance + schema migrations with Flyway)
-- [ ] `[MVP]` Configure environment variable management (`.env` for local, secrets manager for production)
-- [ ] `[MVP]` Set up Git repository with `.gitignore` for Java, React Native, and Python
-- [ ] `[MVP]` Configure Cucumber + JUnit 5 test runner in Spring Boot project
+- [x] `[MVP]` Initialize React Native project with TypeScript template
+- [x] `[MVP]` Initialize Spring Boot 3 project (Java 21, Maven/Gradle, PostgreSQL driver, Spring Security, Spring Data JPA)
+- [x] `[MVP]` Set up PostgreSQL database (local dev instance + schema migrations with Flyway)
+- [x] `[MVP]` Configure environment variable management (`.env` for local, secrets manager for production)
+- [x] `[MVP]` Set up Git repository with `.gitignore` for Java, React Native, and Python
+- [x] `[MVP]` Configure Cucumber + JUnit 5 test runner in Spring Boot project
 - [ ] Initialize Python FastAPI microservice project structure (Poetry, Pydantic, pytest)
 - [ ] Set up CI pipeline (GitHub Actions) — build, test, lint on every PR
 
@@ -19,16 +19,16 @@
 
 ## Backend (Spring Boot)
 
-- [ ] `[MVP]` Design PostgreSQL schema: `users`, `recipes`, `saved_recipes`, `baking_substitutions`
-- [ ] `[MVP]` Implement user registration and login (JWT-based authentication)
-- [ ] `[MVP]` Implement `POST /api/v1/recipes/parse` — accept raw recipe text, return structured recipe (ingredients list + instructions)
-- [ ] `[MVP]` Implement `POST /api/v1/recipes/healthify` — accept structured recipe + slider intensity, return substituted recipe with "why" explanations
-- [ ] `[MVP]` Implement `GET/POST /api/v1/recipes/saved` — save and retrieve user's recipes
-- [ ] `[MVP]` Implement `RecipeScraperPort` interface (stub implementation for MVP — real Jsoup scraper is Phase 2)
-- [ ] `[MVP]` Implement `SubstitutionValidator` — validates AI output against temperature/method allowlist before returning to client
-- [ ] `[MVP]` Build hardcoded Baking Mode substitution database (fat, sugar, egg, flour equivalents)
-- [ ] `[MVP]` Implement `POST /api/v1/recipes/healthify` Baking Mode path — consult only hardcoded DB, never AI
-- [ ] Write Cucumber `.feature` files for all substitution business rules and safety constraints
+- [x] `[MVP]` Design PostgreSQL schema: `users`, `recipes`, `saved_recipes`, `baking_substitutions`
+- [x] `[MVP]` Implement user registration and login (JWT-based authentication)
+- [x] `[MVP]` Implement `POST /api/v1/recipes/parse` — accept raw recipe text, return structured recipe (ingredients list + instructions)
+- [x] `[MVP]` Implement `POST /api/v1/recipes/healthify` — accept structured recipe + slider intensity, return substituted recipe with "why" explanations
+- [x] `[MVP]` Implement `GET/POST /api/v1/recipes/saved` — save and retrieve user's recipes
+- [x] `[MVP]` Implement `RecipeScraperPort` interface (stub implementation for MVP — real Jsoup scraper is Phase 2)
+- [x] `[MVP]` Implement `SubstitutionValidator` — validates AI output against temperature/method allowlist before returning to client
+- [x] `[MVP]` Build hardcoded Baking Mode substitution database (fat, sugar, egg, flour equivalents)
+- [x] `[MVP]` Implement `POST /api/v1/recipes/healthify` Baking Mode path — consult only hardcoded DB, never AI
+- [x] Write Cucumber `.feature` files for all substitution business rules and safety constraints
 - [ ] Implement Jsoup URL scraper behind `RecipeScraperPort` (Phase 2)
 - [ ] Implement `POST /api/v1/recipes/scrape` endpoint (Phase 2)
 
@@ -36,15 +36,15 @@
 
 ## Frontend (React Native)
 
-- [ ] `[MVP]` Set up navigation structure (React Navigation — stack + tab navigators)
-- [ ] `[MVP]` Build recipe text entry screen (large text input, submit button)
-- [ ] `[MVP]` Build Healthify slider component (Light Tweaks → Ultra Lean, 5 intensity levels)
-- [ ] `[MVP]` Build substituted recipe display screen (original vs. substituted side-by-side or toggle)
-- [ ] `[MVP]` Build "Why" tooltip component (tappable chip on each substituted ingredient showing explanation)
-- [ ] `[MVP]` Build Baking Mode / Cooking Mode toggle (prominent, clear visual distinction)
-- [ ] `[MVP]` Build user authentication screens (register, login, logout)
-- [ ] `[MVP]` Build saved recipes screen (list view, tap to load)
-- [ ] `[MVP]` Wire all screens to Spring Boot API (Axios or Fetch, auth token handling)
+- [x] `[MVP]` Set up navigation structure (React Navigation — stack + tab navigators)
+- [x] `[MVP]` Build recipe text entry screen (large text input, submit button)
+- [x] `[MVP]` Build Healthify slider component (Light Tweaks → Ultra Lean, 5 intensity levels)
+- [x] `[MVP]` Build substituted recipe display screen (original vs. substituted side-by-side or toggle)
+- [x] `[MVP]` Build "Why" tooltip component (tappable chip on each substituted ingredient showing explanation)
+- [x] `[MVP]` Build Baking Mode / Cooking Mode toggle (prominent, clear visual distinction)
+- [x] `[MVP]` Build user authentication screens (register, login, logout)
+- [x] `[MVP]` Build saved recipes screen (list view, tap to load)
+- [x] `[MVP]` Wire all screens to Spring Boot API (Axios or Fetch, auth token handling)
 - [ ] Build OCR camera scanner screen with editable confirmation step (Phase 2)
 - [ ] Build URL input screen with scraping feedback (Phase 2)
 - [ ] Build nutritional summary screen with export options (Phase 3)
@@ -54,11 +54,11 @@
 
 ## AI Integration
 
-- [ ] `[MVP]` Write and version initial Cooking Mode prompt (save to `backend/src/main/resources/prompts/v1-cooking-mode.txt`)
-- [ ] `[MVP]` Implement `AISubstitutionPort` interface with OpenAI (or Gemini) adapter
-- [ ] `[MVP]` Map slider intensity levels to prompt parameters (e.g., Light Tweaks = conservative substitution constraints in prompt)
-- [ ] `[MVP]` Implement structured output parsing — AI response → typed `SubstitutedRecipe` model
-- [ ] `[MVP]` Implement `SubstitutionValidator` allowlist for temperatures and cooking methods
+- [x] `[MVP]` Write and version initial Cooking Mode prompt (save to `backend/src/main/resources/prompts/v1-cooking-mode.txt`)
+- [x] `[MVP]` Implement `AISubstitutionPort` interface with OpenAI (or Gemini) adapter
+- [x] `[MVP]` Map slider intensity levels to prompt parameters (e.g., Light Tweaks = conservative substitution constraints in prompt)
+- [x] `[MVP]` Implement structured output parsing — AI response → typed `SubstitutedRecipe` model
+- [x] `[MVP]` Implement `SubstitutionValidator` allowlist for temperatures and cooking methods
 - [ ] Handle AI API rate limiting and timeout gracefully (fallback error message to user)
 - [ ] Build LLM safety trap suite — 100+ edge-case recipes in `backend/src/test/resources/llm-safety/` (required pre-launch)
 - [ ] Automated safety suite runner — executes all trap recipes and reports pass/fail (required pre-launch)
@@ -111,10 +111,10 @@
 
 ## Testing & QA
 
-- [ ] `[MVP]` Write Cucumber scenarios for all Cooking Mode substitution rules
-- [ ] `[MVP]` Write Cucumber scenarios for all Baking Mode safety rules (no AI path, correct DB lookups)
-- [ ] `[MVP]` Write JUnit 5 unit tests for `SubstitutionService`, `BakingSubstitutionService`, `SubstitutionValidator`
-- [ ] `[MVP]` Write JUnit 5 unit tests for recipe parsing logic
+- [x] `[MVP]` Write Cucumber scenarios for all Cooking Mode substitution rules
+- [x] `[MVP]` Write Cucumber scenarios for all Baking Mode safety rules (no AI path, correct DB lookups)
+- [x] `[MVP]` Write JUnit 5 unit tests for `SubstitutionService`, `BakingSubstitutionService`, `SubstitutionValidator`
+- [x] `[MVP]` Write JUnit 5 unit tests for recipe parsing logic
 - [ ] Set up Appium test project (Phase 2 — required before OCR/camera features ship)
 - [ ] Write Appium tests for slider interaction and Baking Mode toggle (Phase 2)
 - [ ] Write Appium tests for full OCR camera flow (Phase 2)
