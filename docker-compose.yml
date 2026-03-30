@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: healthify_postgres
+    environment:
+      POSTGRES_USER: healthify
+      POSTGRES_PASSWORD: Healthify2026
+      POSTGRES_DB: healthify
+    ports:
+      - "5433:5432"
+    volumes:
+      - healthify_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U healthify -d healthify"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  healthify_pgdata:
