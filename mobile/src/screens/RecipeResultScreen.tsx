@@ -32,7 +32,7 @@ export default function RecipeResultScreen({navigation, route}: Props) {
     try {
       const mode = isBaking ? 'BAKING' : 'COOKING';
       const response = await healthify(recipe, intensity, mode);
-      navigation.navigate('HealthifyResult', {response});
+      navigation.navigate('HealthifyResult', {response, recipeId: recipe.recipeId, sliderIntensity: intensity, mode});
     } catch (err: any) {
       Alert.alert('Error', err.response?.data?.message ?? 'Something went wrong. Please try again.');
     } finally {

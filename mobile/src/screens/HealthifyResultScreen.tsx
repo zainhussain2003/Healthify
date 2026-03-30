@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RouteProp} from '@react-navigation/native';
@@ -30,15 +31,21 @@ function WhyTooltip({why}: {why: string}) {
 }
 
 export default function HealthifyResultScreen({navigation, route}: Props) {
-  const {response} = route.params;
+  const {response, recipeId, sliderIntensity, mode} = route.params;
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const handleSave = async () => {
+    if (saved) return;
+    setSaving(true);
     try {
-      // recipeId not available at this point in the flow without passing it through navigation
-      // This is a UX placeholder — saving from this screen requires recipeId
+      await saveRecipe(recipeId, response, sliderIntensity, mode);
+      setSaved(true);
       Alert.alert('Saved!', 'Recipe saved to your collection.');
     } catch {
-      Alert.alert('Error', 'Failed to save recipe.');
+      Alert.alert('Error', 'Failed to save recipe. Please try again.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -85,8 +92,13 @@ export default function HealthifyResultScreen({navigation, route}: Props) {
         <Text key={i} style={styles.instruction}>{i + 1}. {step}</Text>
       ))}
 
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveText}>Save Recipe</Text>
+      <TouchableOpacity
+        style={[styles.saveButton, saved && styles.saveButtonDone]}
+        onPress={handleSave}
+        disabled={saving || saved}>
+        {saving
+          ? <ActivityIndicator color="#fff" />
+          : <Text style={styles.saveText}>{saved ? 'Saved!' : 'Save Recipe'}</Text>}
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -135,6 +147,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2d7a4f', borderRadius: 12, padding: 16,
     alignItems: 'center', marginTop: 24,
   },
+  saveButtonDone: {backgroundColor: '#5a9e76'},
   saveText: {color: '#fff', fontSize: 16, fontWeight: '600'},
   homeButton: {
     borderWidth: 1, borderColor: '#ddd', borderRadius: 12, padding: 16,

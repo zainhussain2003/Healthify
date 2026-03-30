@@ -37,6 +37,6 @@ export type RootStackParamList = {
   Home: undefined;
   RecipeEntry: undefined;
   RecipeResult: { recipe: ParsedRecipe };
-  HealthifyResult: { response: HealthifyResponse };
+  HealthifyResult: { response: HealthifyResponse; recipeId: number; sliderIntensity: number; mode: 'COOKING' | 'BAKING' };
   SavedRecipes: undefined;
 };

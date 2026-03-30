@@ -18,9 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// @Service removed — GeminiSubstitutionAdapter is the active AISubstitutionPort implementation
+/**
+ * Gemini adapter for AI-powered ingredient substitution (Cooking Mode).
+ * Model: gemini-2.0-flash — best stable model on the Gemini free tier.
+ * To upgrade to gemini-2.5-flash-preview, update ai.model in application.properties.
+ */
+@Service
 @Slf4j
-public class OpenAISubstitutionAdapter implements AISubstitutionPort {
+public class GeminiSubstitutionAdapter implements AISubstitutionPort {
+
+    private static final String GEMINI_API_URL =
+            "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s";
 
     private final String apiKey;
     private final String model;
@@ -28,7 +36,7 @@ public class OpenAISubstitutionAdapter implements AISubstitutionPort {
     private final HttpClient httpClient;
     private final String systemPrompt;
 
-    public OpenAISubstitutionAdapter(
+    public GeminiSubstitutionAdapter(
             @Value("${ai.api-key}") String apiKey,
             @Value("${ai.model}") String model,
             ObjectMapper objectMapper) {
@@ -41,35 +49,35 @@ public class OpenAISubstitutionAdapter implements AISubstitutionPort {
 
     @Override
     public HealthifyResponse substitute(ParsedRecipe recipe, int sliderIntensity) {
-        if (apiKey == null || apiKey.isBlank() || apiKey.startsWith("sk-...")) {
-            log.warn("AI API key not configured — returning mock substitution response");
+        if (apiKey == null || apiKey.isBlank()) {
+            log.warn("Gemini API key not configured — returning mock substitution response");
             return buildMockResponse(recipe);
         }
 
         try {
             String userMessage = buildUserMessage(recipe, sliderIntensity);
             String requestBody = buildRequestBody(userMessage);
+            String url = String.format(GEMINI_API_URL, model, apiKey);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://api.openai.com/v1/chat/completions"))
+                    .uri(URI.create(url))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                log.error("OpenAI API error: status={} body={}", response.statusCode(), response.body());
+                log.error("Gemini API error: status={} body={}", response.statusCode(), response.body());
                 throw new RuntimeException("AI service unavailable");
             }
 
-            return parseAIResponse(response.body(), recipe);
+            return parseGeminiResponse(response.body(), recipe);
 
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
-            log.error("Failed to call OpenAI API", e);
+            log.error("Failed to call Gemini API", e);
             throw new RuntimeException("AI service unavailable");
         }
     }
@@ -97,22 +105,33 @@ public class OpenAISubstitutionAdapter implements AISubstitutionPort {
     }
 
     private String buildRequestBody(String userMessage) throws Exception {
-        var messages = List.of(
-                objectMapper.createObjectNode().put("role", "system").put("content", systemPrompt),
-                objectMapper.createObjectNode().put("role", "user").put("content", userMessage)
-        );
+        // Gemini request format: system_instruction + user content
+        var systemPart = objectMapper.createObjectNode();
+        systemPart.set("parts", objectMapper.createArrayNode()
+                .add(objectMapper.createObjectNode().put("text", systemPrompt)));
+
+        var userPart = objectMapper.createObjectNode();
+        userPart.put("role", "user");
+        userPart.set("parts", objectMapper.createArrayNode()
+                .add(objectMapper.createObjectNode().put("text", userMessage)));
+
+        var generationConfig = objectMapper.createObjectNode();
+        generationConfig.put("temperature", 0.3);
+        generationConfig.put("responseMimeType", "application/json");
 
         var body = objectMapper.createObjectNode();
-        body.put("model", model);
-        body.put("temperature", 0.3);
-        body.set("messages", objectMapper.valueToTree(messages));
+        body.set("system_instruction", systemPart);
+        body.set("contents", objectMapper.createArrayNode().add(userPart));
+        body.set("generationConfig", generationConfig);
 
         return objectMapper.writeValueAsString(body);
     }
 
-    private HealthifyResponse parseAIResponse(String responseBody, ParsedRecipe recipe) throws Exception {
+    private HealthifyResponse parseGeminiResponse(String responseBody, ParsedRecipe recipe) throws Exception {
         JsonNode root = objectMapper.readTree(responseBody);
-        String content = root.path("choices").get(0).path("message").path("content").asText();
+        String content = root.path("candidates").get(0)
+                .path("content").path("parts").get(0)
+                .path("text").asText();
 
         JsonNode result = objectMapper.readTree(content);
 
@@ -159,7 +178,7 @@ public class OpenAISubstitutionAdapter implements AISubstitutionPort {
                                 .amount(ing.getAmount())
                                 .unit(ing.getUnit())
                                 .build())
-                        .why("Mock substitution — add your AI API key to get real suggestions.")
+                        .why("Mock substitution — add your Gemini API key to get real suggestions.")
                         .build())
                 .collect(Collectors.toList());
 
