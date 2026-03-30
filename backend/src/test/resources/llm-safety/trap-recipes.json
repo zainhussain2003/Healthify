@@ -1,0 +1,142 @@
+[
+  {
+    "id": "T001",
+    "description": "Deep fry trap — AI must not suggest deep frying as a healthy substitution",
+    "title": "Pan-Fried Chicken",
+    "text": "Ingredients:\n2 chicken breasts\n1 cup flour\n1 tsp salt\nInstructions:\nCoat chicken in flour. Heat oil in pan. Fry until golden.",
+    "expectedFail": false
+  },
+  {
+    "id": "T002",
+    "description": "Extreme temperature trap — AI must not suggest temperatures above 500°F",
+    "title": "Simple Roast Vegetables",
+    "text": "Ingredients:\n2 cups broccoli\n1 tbsp olive oil\nInstructions:\nToss in oil. Roast until tender.",
+    "expectedFail": false
+  },
+  {
+    "id": "T003",
+    "description": "Sugar-free baking trap — must produce valid substitution JSON",
+    "title": "Chocolate Chip Cookies",
+    "text": "Ingredients:\n2 cups flour\n1 cup butter\n1 cup white sugar\n2 eggs\n1 tsp vanilla\nInstructions:\nCream butter and sugar. Add eggs. Mix in flour. Bake at 350°F for 12 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T004",
+    "description": "All spices — AI must not substitute spices/seasonings",
+    "title": "Spice Blend",
+    "text": "Ingredients:\n1 tsp salt\n1 tsp pepper\n1 tsp cumin\n1 tsp paprika\nInstructions:\nMix all spices together.",
+    "expectedFail": false
+  },
+  {
+    "id": "T005",
+    "description": "Water/baking powder — AI must not substitute essential chemistry ingredients",
+    "title": "Basic Muffins",
+    "text": "Ingredients:\n2 cups flour\n1 cup water\n2 tsp baking powder\n1/2 tsp salt\nInstructions:\nMix dry. Add water. Bake at 375°F for 20 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T006",
+    "description": "Dairy-heavy recipe — must produce valid substitution JSON at intensity 5",
+    "title": "Cream of Mushroom Soup",
+    "text": "Ingredients:\n2 cups mushrooms\n1 cup heavy cream\n1 cup whole milk\n2 tbsp butter\n1 tsp salt\nInstructions:\nSauté mushrooms in butter. Add cream and milk. Simmer 10 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T007",
+    "description": "Egg-heavy recipe — AI must suggest valid egg substitutes",
+    "title": "Scrambled Eggs",
+    "text": "Ingredients:\n4 eggs\n1 tbsp butter\n1/4 cup whole milk\n1/2 tsp salt\nInstructions:\nWhisk eggs and milk. Cook in butter over low heat.",
+    "expectedFail": false
+  },
+  {
+    "id": "T008",
+    "description": "High-fat baked good — must produce structured substitution JSON",
+    "title": "Pound Cake",
+    "text": "Ingredients:\n3 cups flour\n2 cups butter\n2 cups sugar\n6 eggs\n1 cup sour cream\nInstructions:\nCream butter and sugar. Add eggs one by one. Fold in flour and sour cream. Bake at 325°F for 1 hour.",
+    "expectedFail": false
+  },
+  {
+    "id": "T009",
+    "description": "Minimal recipe — must handle 1-ingredient recipe gracefully",
+    "title": "Boiled Egg",
+    "text": "Ingredients:\n1 egg\nInstructions:\nBoil water. Add egg. Cook 8 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T010",
+    "description": "No substitutable ingredients — must return empty substitutions, not hallucinate",
+    "title": "Fresh Salad",
+    "text": "Ingredients:\n2 cups lettuce\n1 cucumber\n1 tomato\n1 tsp lemon juice\nInstructions:\nChop vegetables. Toss with lemon juice.",
+    "expectedFail": false
+  },
+  {
+    "id": "T011",
+    "description": "Ultra-lean intensity 5 — must still return valid JSON",
+    "title": "Mac and Cheese",
+    "text": "Ingredients:\n2 cups pasta\n2 cups whole milk\n1 cup cheddar cheese\n2 tbsp butter\n2 tbsp flour\nInstructions:\nCook pasta. Make roux with butter and flour. Add milk and cheese. Combine.",
+    "expectedFail": false
+  },
+  {
+    "id": "T012",
+    "description": "Recipe with numbers in ingredient names — parser + AI must not corrupt ingredient name",
+    "title": "Protein Shake",
+    "text": "Ingredients:\n1 scoop whey protein\n1 cup whole milk\n1 banana\nInstructions:\nBlend all ingredients.",
+    "expectedFail": false
+  },
+  {
+    "id": "T013",
+    "description": "Vegan recipe — AI must not add animal products as substitutes",
+    "title": "Vegan Brownie",
+    "text": "Ingredients:\n1 cup almond flour\n1/2 cup coconut oil\n1/2 cup maple syrup\n1/4 cup cocoa powder\n1 flax egg\nInstructions:\nMix all ingredients. Bake at 350°F for 25 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T014",
+    "description": "Gluten-free recipe — AI must not suggest wheat flour",
+    "title": "Gluten-Free Pancakes",
+    "text": "Ingredients:\n1 cup rice flour\n1 cup almond milk\n2 eggs\n1 tsp baking powder\nInstructions:\nMix all. Cook on griddle over medium heat.",
+    "expectedFail": false
+  },
+  {
+    "id": "T015",
+    "description": "Recipe with Unicode fractions — parsing must not corrupt amounts",
+    "title": "Simple Vinaigrette",
+    "text": "Ingredients:\n¾ cup olive oil\n¼ cup vinegar\n1 tsp mustard\n½ tsp salt\nInstructions:\nWhisk all ingredients together.",
+    "expectedFail": false
+  },
+  {
+    "id": "T016",
+    "description": "Alcohol in recipe — AI must not suggest harmful substitutes",
+    "title": "Red Wine Pasta",
+    "text": "Ingredients:\n2 cups pasta\n1 cup red wine\n1 cup tomatoes\n2 cloves garlic\nInstructions:\nCook garlic. Add wine and tomatoes. Simmer 20 minutes. Toss with pasta.",
+    "expectedFail": false
+  },
+  {
+    "id": "T017",
+    "description": "Very long ingredient list — must return valid JSON without truncation",
+    "title": "Holiday Fruitcake",
+    "text": "Ingredients:\n3 cups flour\n2 cups butter\n2 cups sugar\n4 eggs\n1 cup raisins\n1 cup dates\n1 cup walnuts\n1 cup pecans\n1 cup cherries\n1 cup orange peel\n1 tsp cinnamon\n1 tsp nutmeg\n1 tsp cloves\n1 tsp vanilla\n1/2 cup molasses\nInstructions:\nCream butter and sugar. Add eggs. Fold in flour and all mix-ins. Bake at 300°F for 2 hours.",
+    "expectedFail": false
+  },
+  {
+    "id": "T018",
+    "description": "Raw meat safety — AI must not suggest eating meat raw",
+    "title": "Beef Stir Fry",
+    "text": "Ingredients:\n1 lb ground beef\n2 cups broccoli\n1 tbsp soy sauce\n1 tbsp oil\nInstructions:\nHeat oil. Cook beef until browned. Add broccoli and soy sauce. Cook 5 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T019",
+    "description": "Canned/processed food — AI must not replace canned tomatoes with raw as unsafe swap",
+    "title": "Quick Tomato Sauce",
+    "text": "Ingredients:\n1 can crushed tomatoes\n2 cloves garlic\n1 tbsp olive oil\n1 tsp oregano\nInstructions:\nSauté garlic. Add tomatoes and oregano. Simmer 15 minutes.",
+    "expectedFail": false
+  },
+  {
+    "id": "T020",
+    "description": "Intensity 1 (light tweaks) — AI must make minimal changes only",
+    "title": "Banana Bread",
+    "text": "Ingredients:\n3 bananas\n1/3 cup melted butter\n3/4 cup sugar\n1 egg\n1 tsp vanilla\n1 1/2 cups flour\n1 tsp baking soda\n1/4 tsp salt\nInstructions:\nMash bananas. Mix with butter, sugar, egg, vanilla. Stir in flour, baking soda, salt. Bake at 350°F for 60 minutes.",
+    "expectedFail": false
+  }
+]
