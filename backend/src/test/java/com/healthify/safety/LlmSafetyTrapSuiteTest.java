@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
+import org.junit.jupiter.api.Tag;
+
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +31,7 @@ import static org.assertj.core.api.Assertions.*;
  * Skipped automatically when AI_API_KEY env var is not set.
  * Always runs in CI via the GEMINI_API_KEY GitHub secret (mapped to AI_API_KEY).
  */
+@Tag("safety")
 @Slf4j
 class LlmSafetyTrapSuiteTest {
 

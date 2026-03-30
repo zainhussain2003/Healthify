@@ -1,0 +1,61 @@
+name: LLM Safety Suite
+
+on:
+  workflow_dispatch: # manual trigger from GitHub Actions UI
+  push:
+    paths:
+      - 'backend/src/main/resources/prompts/**' # auto-runs when AI prompt changes
+
+jobs:
+  safety:
+    name: LLM Safety Trap Suite (live Gemini API)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: healthify
+          POSTGRES_PASSWORD: Healthify2026
+          POSTGRES_DB: healthify
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U healthify -d healthify"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5433
+      DB_NAME: healthify
+      DB_USER: healthify
+      DB_PASSWORD: Healthify2026
+      JWT_SECRET: ci-test-secret-not-for-production
+      AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      AI_PROVIDER: gemini
+      AI_MODEL: gemini-2.0-flash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+
+      - name: Run LLM safety trap suite
+        working-directory: backend
+        run: ./mvnw test -Dgroups=safety --no-transfer-progress
+
+      - name: Upload safety reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safety-reports
+          path: backend/target/surefire-reports/
