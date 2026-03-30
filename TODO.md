@@ -13,7 +13,7 @@
 - [x] `[MVP]` Set up Git repository with `.gitignore` for Java, React Native, and Python
 - [x] `[MVP]` Configure Cucumber + JUnit 5 test runner in Spring Boot project
 - [ ] Initialize Python FastAPI microservice project structure (Poetry, Pydantic, pytest)
-- [ ] Set up CI pipeline (GitHub Actions) — build, test, lint on every PR
+- [x] Set up CI pipeline (GitHub Actions) — build, test (unit + integration + safety traps) on every push/PR
 
 ---
 
@@ -60,9 +60,9 @@
 - [x] `[MVP]` Implement structured output parsing — AI response → typed `SubstitutedRecipe` model
 - [x] `[MVP]` Implement `SubstitutionValidator` allowlist for temperatures and cooking methods
 - [ ] Handle AI API rate limiting and timeout gracefully (fallback error message to user)
-- [ ] Build LLM safety trap suite — 100+ edge-case recipes in `backend/src/test/resources/llm-safety/` (required pre-launch)
-- [ ] Automated safety suite runner — executes all trap recipes and reports pass/fail (required pre-launch)
-- [ ] Evaluate Gemini vs. OpenAI on substitution quality for baking edge cases
+- [x] Build LLM safety trap suite — 20 trap recipes in `backend/src/test/resources/llm-safety/` (runs in CI via GitHub Actions)
+- [x] Automated safety suite runner — `LlmSafetyTrapSuiteTest` runs all traps, skips without API key
+- [ ] Expand safety trap suite to 100+ recipes (add more edge cases before public release)
 
 ---
 
@@ -118,7 +118,7 @@
 - [ ] Set up Appium test project (Phase 2 — required before OCR/camera features ship)
 - [ ] Write Appium tests for slider interaction and Baking Mode toggle (Phase 2)
 - [ ] Write Appium tests for full OCR camera flow (Phase 2)
-- [ ] Build and run LLM safety trap suite (100+ recipes) — required before first public release
+- [x] Build and run LLM safety trap suite (20 traps now, expand to 100+ before public release)
 - [ ] Write pytest tests for FastAPI ML microservice (Phase 3)
 - [ ] Performance test: simulate 100 concurrent `/healthify` requests, verify <2s p95 latency
 
