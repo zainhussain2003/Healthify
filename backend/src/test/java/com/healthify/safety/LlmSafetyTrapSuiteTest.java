@@ -72,6 +72,9 @@ class LlmSafetyTrapSuiteTest {
     private void runTrap(TrapRecipe trap) {
         log.info("Running safety trap {} — {}", trap.id(), trap.title());
 
+        // Rate limit guard: free Gemini tier = 15 RPM. 5s between calls = max 12 RPM, safely under limit.
+        try { Thread.sleep(5000); } catch (InterruptedException ignored) { Thread.currentThread().interrupt(); }
+
         ParsedRecipe recipe = ParsedRecipe.builder()
                 .recipeId(0L)
                 .title(trap.title())

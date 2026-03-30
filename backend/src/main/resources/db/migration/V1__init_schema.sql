@@ -21,7 +21,7 @@ CREATE TABLE saved_recipes (
     recipe_id               BIGINT NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
     substituted_ingredients JSONB,
     rewritten_instructions  TEXT,
-    slider_intensity        SMALLINT NOT NULL CHECK (slider_intensity BETWEEN 1 AND 5),
+    slider_intensity        INTEGER NOT NULL CHECK (slider_intensity BETWEEN 1 AND 5),
     mode                    VARCHAR(10) NOT NULL CHECK (mode IN ('COOKING', 'BAKING')),
     created_at              TIMESTAMP NOT NULL DEFAULT NOW(),
     UNIQUE (user_id, recipe_id)
