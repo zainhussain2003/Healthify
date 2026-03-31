@@ -5,35 +5,31 @@ interface Props {
 export default function HealthifyLogo({ size = 100 }: Props) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 100">
-      {/* Citrus half-slice base */}
+      {/* Rounded green background */}
+      <rect x="0" y="0" width="100" height="100" rx="22" fill="#2d7a4f" />
+
+      {/* Stem */}
+      <line x1="50" y1="80" x2="50" y2="54" stroke="white" strokeWidth="4" strokeLinecap="round" />
+
+      {/* Main centre leaf */}
       <path
-        d="M20 62 Q50 82 80 62 L80 62 Q80 90 50 90 Q20 90 20 62 Z"
-        fill="#a8d5a2"
-        opacity={0.9}
+        d="M50 54 C50 54 34 43 35 24 C41 17 59 17 65 24 C66 43 50 54 50 54 Z"
+        fill="white"
       />
-      {/* Citrus inner segments */}
-      <path d="M50 66 L50 88" stroke="#2d7a4f" strokeWidth={1.5} opacity={0.5} />
-      <path d="M50 66 L30 78" stroke="#2d7a4f" strokeWidth={1.5} opacity={0.5} />
-      <path d="M50 66 L70 78" stroke="#2d7a4f" strokeWidth={1.5} opacity={0.5} />
-      <circle cx={50} cy={66} r={3} fill="#2d7a4f" opacity={0.4} />
-      {/* Main large leaf — center */}
+      {/* Centre leaf vein */}
+      <path d="M50 52 L50 26" stroke="#2d7a4f" strokeWidth="1.5" opacity="0.25" strokeLinecap="round" />
+
+      {/* Left small leaf */}
       <path
-        d="M50 58 C50 58 30 40 34 18 C38 10 50 8 50 8 C50 8 62 10 66 18 C70 40 50 58 50 58 Z"
-        fill="#2d7a4f"
+        d="M50 64 C50 64 30 59 27 47 C35 43 50 64 50 64 Z"
+        fill="rgba(255,255,255,0.85)"
       />
-      <path d="M50 55 L50 14" stroke="#fff" strokeWidth={1.2} opacity={0.4} />
-      {/* Left leaf */}
+
+      {/* Right small leaf */}
       <path
-        d="M42 50 C42 50 22 40 20 22 C19 14 28 10 28 10 C28 10 38 14 40 28 C42 42 42 50 42 50 Z"
-        fill="#3a9b63"
+        d="M50 64 C50 64 70 59 73 47 C65 43 50 64 50 64 Z"
+        fill="rgba(255,255,255,0.85)"
       />
-      <path d="M41 48 L24 16" stroke="#fff" strokeWidth={1} opacity={0.35} />
-      {/* Right leaf */}
-      <path
-        d="M58 50 C58 50 78 40 80 22 C81 14 72 10 72 10 C72 10 62 14 60 28 C58 42 58 50 58 50 Z"
-        fill="#3a9b63"
-      />
-      <path d="M59 48 L76 16" stroke="#fff" strokeWidth={1} opacity={0.35} />
     </svg>
   );
 }

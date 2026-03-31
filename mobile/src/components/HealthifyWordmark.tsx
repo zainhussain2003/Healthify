@@ -1,18 +1,17 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
-import {fonts, colors} from '../theme';
+import { View, Text, StyleSheet } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import { fonts, colors } from '../theme';
 
 interface Props {
   size?: 'large' | 'medium';
-  light?: boolean; // white text for dark backgrounds
+  light?: boolean;
 }
 
-/** Tiny leaf SVG to sit above the dot of the "i" */
-function LeafDot({size, light}: {size: number; light?: boolean}) {
+function LeafDot({ pxSize, light }: { pxSize: number; light?: boolean }) {
   const fill = light ? '#a8e6c0' : colors.green;
   return (
-    <Svg width={size} height={size} viewBox="0 0 20 20">
+    <Svg width={pxSize} height={pxSize} viewBox="0 0 20 20">
       <Path
         d="M10 18 C10 18 2 12 3 5 C4 1 10 1 10 1 C10 1 16 1 17 5 C18 12 10 18 10 18 Z"
         fill={fill}
@@ -22,30 +21,42 @@ function LeafDot({size, light}: {size: number; light?: boolean}) {
   );
 }
 
-export default function HealthifyWordmark({size = 'large', light = false}: Props) {
+export default function HealthifyWordmark({ size = 'large', light = false }: Props) {
   const fontSize = size === 'large' ? 42 : 28;
-  const leafSize = size === 'large' ? 13 : 9;
-  // Offset to place leaf over the dot of "i" (between "Health" and "fy")
-  const leafTop = size === 'large' ? -2 : -1;
+  const leafPx = size === 'large' ? 16 : 11;
   const textColor = light ? '#fff' : colors.green;
+  const coverBg = light ? colors.greenDark : colors.white;
+  const dotTop = size === 'large' ? 7 : 5;
+  const coverW = leafPx + 6;
 
   return (
     <View style={styles.row}>
-      {/* "Health" */}
-      <Text style={[styles.text, {fontSize, color: textColor}]}>Health</Text>
+      <Text style={[styles.text, { fontSize, color: textColor }]}>Health</Text>
 
-      {/* "i" with leaf replacing its dot */}
+      {/* "i" with original dot hidden and leaf replacing it */}
       <View style={styles.iWrapper}>
-        {/* The "i" body only — we hide the dot via a covering View, then overlay the leaf */}
-        <Text style={[styles.text, {fontSize, color: textColor}]}>i</Text>
-        {/* Leaf overlay on the dot position */}
-        <View style={[styles.leafOverlay, {top: leafTop}]}>
-          <LeafDot size={leafSize} light={light} />
+        <Text style={[styles.text, { fontSize, color: textColor }]}>i</Text>
+
+        {/* Cover the original font dot */}
+        <View
+          style={{
+            position: 'absolute',
+            top: dotTop,
+            alignSelf: 'center',
+            width: coverW,
+            height: leafPx + 4,
+            backgroundColor: coverBg,
+            zIndex: 1,
+          }}
+        />
+
+        {/* Leaf replaces the dot */}
+        <View style={{ position: 'absolute', top: dotTop, alignSelf: 'center', zIndex: 2 }}>
+          <LeafDot pxSize={leafPx} light={light} />
         </View>
       </View>
 
-      {/* "fy" */}
-      <Text style={[styles.text, {fontSize, color: textColor}]}>fy</Text>
+      <Text style={[styles.text, { fontSize, color: textColor }]}>fy</Text>
     </View>
   );
 }
@@ -62,9 +73,5 @@ const styles = StyleSheet.create({
   iWrapper: {
     position: 'relative',
     alignItems: 'center',
-  },
-  leafOverlay: {
-    position: 'absolute',
-    alignSelf: 'center',
   },
 });
