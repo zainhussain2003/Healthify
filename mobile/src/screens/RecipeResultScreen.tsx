@@ -34,7 +34,8 @@ export default function RecipeResultScreen({navigation, route}: Props) {
       const response = await healthify(recipe, intensity, mode);
       navigation.navigate('HealthifyResult', {response, recipeId: recipe.recipeId, sliderIntensity: intensity, mode});
     } catch (err: any) {
-      Alert.alert('Error', err.response?.data?.message ?? 'Something went wrong. Please try again.');
+      const msg = err.response?.data?.error ?? err.response?.data?.message ?? 'Something went wrong. Please try again.';
+      Alert.alert('Error', msg);
     } finally {
       setLoading(false);
     }

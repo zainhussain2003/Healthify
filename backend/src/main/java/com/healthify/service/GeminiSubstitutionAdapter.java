@@ -3,6 +3,7 @@ package com.healthify.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthify.dto.*;
+import com.healthify.exception.RateLimitException;
 import com.healthify.port.AISubstitutionPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +68,10 @@ public class GeminiSubstitutionAdapter implements AISubstitutionPort {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+            if (response.statusCode() == 429) {
+                log.warn("Gemini rate limit hit: {}", response.body());
+                throw new RateLimitException("The AI service is busy — please wait a moment and try again.");
+            }
             if (response.statusCode() != 200) {
                 log.error("Gemini API error: status={} body={}", response.statusCode(), response.body());
                 throw new RuntimeException("AI service unavailable");
