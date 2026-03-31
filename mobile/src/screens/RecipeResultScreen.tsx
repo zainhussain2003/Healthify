@@ -62,7 +62,7 @@ export default function RecipeResultScreen({navigation, route}: Props) {
       <Text style={styles.sectionHeader}>Healthify Settings</Text>
 
       <View style={styles.toggleRow}>
-        <Text style={styles.toggleLabel}>Baking Mode</Text>
+        <Text style={styles.toggleLabel}>Baking Mode (cakes & bread)</Text>
         <Switch
           value={isBaking}
           onValueChange={setIsBaking}
