@@ -1,17 +1,15 @@
 import React, {useState} from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
+  View, Text, TextInput, TouchableOpacity,
+  StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types';
 import {login} from '../api/auth';
+import {colors} from '../theme';
+import HealthifyLogo from '../components/HealthifyLogo';
+import HealthifyWordmark from '../components/HealthifyWordmark';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -33,7 +31,7 @@ export default function LoginScreen({navigation}: Props) {
       await AsyncStorage.setItem('jwt_token', response.token);
       navigation.replace('Home');
     } catch (err: any) {
-      const message = err.response?.data?.message ?? 'Login failed. Check your credentials.';
+      const message = err.response?.data?.error ?? err.response?.data?.message ?? 'Login failed. Check your credentials.';
       Alert.alert('Login failed', message);
     } finally {
       setLoading(false);
@@ -41,49 +39,104 @@ export default function LoginScreen({navigation}: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Healthify</Text>
-      <Text style={styles.subtitle}>Healthier recipes, same great taste</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <View style={styles.logoSection}>
+        <HealthifyLogo size={110} />
+        <View style={styles.wordmarkWrap}>
+          <HealthifyWordmark size="large" />
+        </View>
+        <Text style={styles.subtitle}>Healthier recipes, same great taste</Text>
+      </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+      <View style={styles.form}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor={colors.textLight}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor={colors.textLight}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Log In</Text>}
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.primaryButton} onPress={handleLogin} disabled={loading}>
+          {loading
+            ? <ActivityIndicator color="#fff" />
+            : <Text style={styles.primaryButtonText}>Log In</Text>}
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.link}>Don't have an account? Sign up</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.secondaryButton} onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.secondaryButtonText}>Create an Account</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff'},
-  title: {fontSize: 36, fontWeight: 'bold', color: '#2d7a4f', textAlign: 'center', marginBottom: 8},
-  subtitle: {fontSize: 14, color: '#666', textAlign: 'center', marginBottom: 40},
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    paddingHorizontal: 28,
+    justifyContent: 'center',
+  },
+  logoSection: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  wordmarkWrap: {
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: colors.textMuted,
+    textAlign: 'center',
+  },
+  form: {
+    gap: 12,
+  },
   input: {
-    borderWidth: 1, borderColor: '#ddd', borderRadius: 10, padding: 14,
-    marginBottom: 14, fontSize: 16,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    color: colors.text,
+    backgroundColor: colors.offWhite,
   },
-  button: {
-    backgroundColor: '#2d7a4f', borderRadius: 10, padding: 16,
-    alignItems: 'center', marginTop: 8,
+  primaryButton: {
+    backgroundColor: colors.green,
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    marginTop: 4,
   },
-  buttonText: {color: '#fff', fontSize: 16, fontWeight: '600'},
-  link: {color: '#2d7a4f', textAlign: 'center', marginTop: 20, fontSize: 14},
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  secondaryButton: {
+    borderWidth: 2,
+    borderColor: colors.green,
+    borderRadius: 12,
+    padding: 15,
+    alignItems: 'center',
+  },
+  secondaryButtonText: {
+    color: colors.green,
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });
